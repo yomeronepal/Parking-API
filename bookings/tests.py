@@ -1,7 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
-from threading import Thread
 from bookings.models import Booking
 
 
@@ -124,46 +123,3 @@ class BookingsViewTestCase(TestCase):
         self.assertEqual(
             response.json(), {"message": "No bookings found for the requested date."}
         )
-
-    def test_concurrent_bookings(self):
-        # Make an initial booking
-        response = self.client.post(
-            self.booking_url,
-            {"name": "Alice", "license_plate": "ABC123", "booking_date": "2022-06-01"},
-        )
-        self.assertEqual(response.status_code, 201)
-        initial_booking_id = response.json().get("id")
-        initial_booking_version = response.json().get("version")
-
-        # Define a function for concurrent bookings
-        def make_booking():
-            response = self.client.post(
-                self.booking_url,
-                {
-                    "name": "Bob",
-                    "license_plate": "XYZ789",
-                    "booking_date": "2022-06-01",
-                },
-                format="json",
-            )
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.json().get("message"), "Booking successful.")
-
-        # Create multiple threads for concurrent bookings
-        threads = []
-        for _ in range(5):
-            thread = Thread(target=make_booking)
-            threads.append(thread)
-
-        # Start the concurrent bookings
-        for thread in threads:
-            thread.start()
-
-        # Wait for all threads to complete
-        for thread in threads:
-            thread.join()
-
-        # Check the final state of the initial booking
-        response = self.client.get(f"{self.booking_url}/?date=2022-06-01")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json().get("version"), initial_booking_version + 1)

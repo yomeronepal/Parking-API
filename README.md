@@ -4,9 +4,9 @@ This is a simple API for handling customers' all-day parking reservations at a c
 
 ## Requirements
 
-- Python (version 3.6 or above)
-- Django (version 3.2 or above)
-- Django REST framework (version 3.12 or above)
+- Python (version 3.9.7 or above)
+- Django (version 4.2.2 or above)
+- Django REST framework (version 3.14.0 or above)
 
 ## Installation
 
@@ -61,17 +61,15 @@ response = requests.post('http://localhost:8000/api/bookings/', headers=headers,
 1. Run the unit tests:
    python manage.py test bookings.tests
 
-## Assumptions and Design Decisions
+## Requirements
 
-- Customers can only make one booking per day to ensure fairness and availability for other customers.
-- Bookings must be made at least 24 hours in advance to allow sufficient time for preparation.
-- The API assumes a car park with four bays numbered from 1 to 4 inclusively.
-
-## Limitations and Trade-offs
-
-- The API does not handle concurrency and may encounter issues if multiple requests try to book the same bay simultaneously.
-- The API does not have user authentication and authorization mechanisms.
-- The API does not provide real-time updates or notifications for booking availability.
+- A car park consists of 4 bays numbered 1-4 inclusively.
+- A customer can book all-day parking at a car park within a given date if there is a free bay available.
+- A customer can only make one booking a day.
+- Bookings must be made at least 24h in advance of the booking date.
+- A car park can be queried for all valid bookings on a given date.
+- A booking includes details of the time it was made and the customer who made it.
+- A customer record includes a name and license plate string for a single car
 
 ## Contributing
 

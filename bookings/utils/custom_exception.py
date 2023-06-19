@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 
 class CustomException(Exception):
-    """Base Willow Exception"""
+    """Base  Exception"""
 
 
 def custom_exception_handler(exc, context):

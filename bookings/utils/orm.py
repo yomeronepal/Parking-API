@@ -1,9 +1,5 @@
-from rest_framework.response import Response
-from rest_framework import mixins
-from rest_framework.response import Response
 from django.utils import timezone
 from bookings.models import Booking
-from rest_framework.views import APIView
 
 
 class BookingORM:
@@ -28,43 +24,22 @@ class BookingORM:
         customer_name = self.data.get("name")
         license_plate = self.data.get("license_plate")
         booking_date = self.data.get("booking_date")
-        print(customer_name, license_plate, booking_date)
 
         # Check if customer has already made a booking for today
         today = timezone.now().date()
-        print(
-            "Exists :=== ",
-            Booking.objects.filter(
-                customer_name=customer_name,
-                booking_date=booking_date,
-                license_plate=license_plate,
-            ).exists(),
-        )
         if Booking.objects.filter(
             customer_name=customer_name,
             booking_date=booking_date,
         ).exists():
             raise ValueError("You have already made a booking for today.")
-            # return Response(
-            #     {"message": "You have already made a booking for today."}, status=400
-            # )
 
         # Check if the booking is at least 24 hours in advance
         if booking_date <= str(today):
             raise ValueError("Booking must be made at least 24 hours in advance.")
-            # return Response(
-            #     {"message": "Booking must be made at least 24 hours in advance."},
-            #     status=400,
-            # )
-
         bay = self.check_existing_bay(booking_date)
         # If no free bay is available, return an error message
         if bay is None:
             raise ValueError("No free bays available for the requested date.")
-            # return Response(
-            #     {"message": "No free bays available for the requested date."},
-            #     status=400,
-            # )
 
     def create_booking(self) -> None:
         booking = Booking(
@@ -79,9 +54,6 @@ class BookingORM:
         bookings = Booking.objects.filter(booking_date=self.data.get("date"))
         if not bookings:
             raise ValueError("No bookings found for the requested date.")
-            # return Response(
-            #     {"message": "No bookings found for the requested date."}, status=404
-            # )
 
         booking_data = {
             booking.customer_name: booking.bay_number for booking in bookings
