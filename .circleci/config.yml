@@ -43,7 +43,7 @@ jobs:
             docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
             docker tag parking_api-parking_api $DOCKER_HUB_USER_ID/parking_api:$CIRCLE_SHA1
             docker tag parking_api-parking_api $DOCKER_HUB_USER_ID/parking_api:latest
-            do ker push $DOCKER_HUB_USER_ID/parking_api:$CIRCLE_SHA1
+            docker push $DOCKER_HUB_USER_ID/parking_api:$CIRCLE_SHA1
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
