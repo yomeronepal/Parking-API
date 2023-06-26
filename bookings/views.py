@@ -18,9 +18,9 @@ class BookingView(APIView):
         # Get customer details from request payload
         booking = BookingORM(request.data)
         booking.check_booking()
-        booking.create_booking()
 
         # Create a new booking instance
+        booking.create_booking()
 
         return Response(
             {"message": "Booking successful.", "bay": booking.get_bay()}, status=201

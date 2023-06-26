@@ -1,0 +1,19 @@
+version: '3'
+services:
+  parking_api:
+    build: . 
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - parking
+  redis:
+    image: redis
+    networks:
+      - parking
+
+networks:
+  parking:
+    driver: bridge
+
