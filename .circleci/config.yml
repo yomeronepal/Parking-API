@@ -17,7 +17,7 @@ jobs:
           name: Run docker test
           command: |
             docker-compose up -d
-            docker-compose run dockerapp parking_api python manage.py test
+            docker-compose run parking_api python manage.py test
       - deploy:
           name: Push application Docker Image
           command: |
