@@ -31,6 +31,8 @@ jobs:
           name: Push application Docker Image
           command: |
             docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
+            docker tag parking_api_parking_api $DOCKER_HUB_USER_ID/parking_api:$CIRCLE_SHA1
+            docker tag dockerapp_dockerapp $DOCKER_HUB_USER_ID/parking_api:latest
             docker build -t parking_api .
             docker push $DOCKER_HUB_USER_ID/parking_api:latest
 
