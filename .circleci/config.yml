@@ -23,7 +23,7 @@ jobs:
           command: |
             docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
             docker build -t parking_api .
-            docker push parking_api:latest
+            docker push $DOCKER_HUB_USER_ID/parking_api:latest
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
