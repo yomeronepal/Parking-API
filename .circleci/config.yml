@@ -1,13 +1,11 @@
-
 version: 2
 jobs:
   build:
     working_direcotry: /home/app/webapp/
     docker:
-      - image: docker:17.05.0-ce-git
+      -image: docker:17.05.0-ce-git
     steps:
       - checkout
-      - setup_remote_docker
       - python/install-packages:
           pkg-manager: pip
           # app-dir: ~/project/package-directory/  # If your requirements.txt isn't in the root directory.
@@ -18,12 +16,11 @@ jobs:
             apk add --no-cache py-pip=9.0.0-r1
             pip install docker-compoase==1.15.0
           # This assumes pytest is installed via the install-package step above
-      -run:
-        name: Test Cases
-        command: |
-          docker-compose up -d
-          docker-compose run parking_api python manage.py test
-
+      - run:
+          name: Test Cases
+          command: |
+            docker-compose up -d
+            docker-compose run parking_api python manage.py test.py
 
       - docker-test:
           name: Check Docker deamon status
